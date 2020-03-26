@@ -14,8 +14,7 @@
 <body>
 <div>
   <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-  <script src="./plotly/plotly-latest.min.js"></script>
-  <script src="./plotly/plotly_nuxeo.js" charset="utf-8"></script>
+  <script src="./node_modules/plotly.js-dist/plotly.js"></script>
   <div id="selection" class="plotly-graph-selection">
     <form>
       Select datasource:
@@ -32,18 +31,19 @@
     </form>
     <div id="graph" class="plotly-graph-div"></div>
   </div>
-  <script type="text/javascript">
-    var select = document.getElementById('ds');
-    var datasource = select.value;
-    var datasource_title = select.options[select.selectedIndex].label;
-    select.addEventListener('change', function() {
-      datasource = this.value;
-      datasource_title = this.options[this.selectedIndex].label;
-      NXPlotly.render(datasource, datasource_title, 'graph');
-    });
-    window.onload = function() {
-      NXPlotly.render(datasource, datasource_title, 'graph');
+  <script type="module">
+    import plot from './plotly/plotly_nuxeo.js';
+
+    const sel = document.getElementById('ds');
+
+    const render = () => {
+      const { value, options, selectedIndex } = sel;
+      plot(value, options[selectedIndex].label, 'graph');
     }
+
+    sel.addEventListener('change', render);
+
+    window.onload = render;
   </script>
 </div>
 </body>
